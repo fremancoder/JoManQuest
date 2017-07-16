@@ -14,7 +14,7 @@ import java.util.function.Consumer;
 public class JoManQuest {
 
     public static void main(String[] args) {
-        Consumer<List<Item>> InspectConsumer = (List<Item> itemList)->{ for (Item item : itemList) { item.inspect(); }};
+        Consumer<List<Item>> inspectConsumer = (List<Item> itemList)->{ for (Item item : itemList) { item.inspect(); }};
 
         //First Room Setup
         Room firstRoom = new Room("First Romm","This is the first room and there are a number of nice items in here", "inspect the room and us everything you see, och yeah and try to get out of the room");
@@ -41,7 +41,7 @@ public class JoManQuest {
 
         actionRule3.execute();
         actionRule3.executeLamba((List<Item> itemList)->{ for (Item item : itemList) { item.inspect(); }});
-        actionRule3.executeLamba(InspectConsumer);
-
+        actionRule3.executeLamba(inspectConsumer);
+        actionRule3.executeLamba(inspectConsumer);
     }
 }
