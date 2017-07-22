@@ -5,6 +5,7 @@ import be.joman.jomanquest.domain.action.ActionType;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -33,6 +34,8 @@ public class Item implements Serializable{
         this.isHidden  = isHidden;
 
         getActionRules().add(new ActionRule(ActionType.INSPECT, this ));
+        getActionRules().add(new ActionRule(ActionType.TIP, this ));
+        if(isCollectible) getActionRules().add(new ActionRule(ActionType.TAKE, this ));
     }
 
     public String getName() {
@@ -79,8 +82,8 @@ public class Item implements Serializable{
         return isHidden;
     }
 
-    public void setHidden(boolean hidden) {
-        isHidden = hidden;
+    public void unHide() {
+        isHidden = false;
     }
 
     public List<Item> getItems() {
@@ -123,6 +126,31 @@ public class Item implements Serializable{
                     item.inspect();
                 }
             }
+        }
+    }
+
+    public void info() {
+        System.out.println(info);
+    }
+
+    public void removeItem(Item directObject) {
+        if(items != null && !items.isEmpty()){
+            Iterator<Item> itr = items.iterator();
+            while (itr.hasNext()) {
+                Item item = itr.next();
+                if(item.equals(directObject)){
+                    itr.remove();
+                } else {
+                    item.removeItem(directObject);
+                }
+            }
+        }
+    }
+
+    public void move(List<Item> indirectObjects) {
+        System.out.println("The " + name + " has been moved, who knows what has happened?");
+        for (Item item : indirectObjects) {
+            if(item.isHidden()) item.unHide();
         }
     }
 

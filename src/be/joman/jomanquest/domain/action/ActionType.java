@@ -15,5 +15,5 @@ public enum ActionType {
     MUTE,
     LOAD,
     SAVE,
-    QUIT;
+    QUIT, TIP;
 }

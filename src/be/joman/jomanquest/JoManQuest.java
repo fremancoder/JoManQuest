@@ -23,13 +23,14 @@ public class JoManQuest {
             String[] splited = command.split("\\s+");
             if (splited.length == 1) {
                 actionType = actionController.findActionType(splited[0]);
-                game.findActionRule(actionType).execute(actionController.getAction(actionType));
+                game.findActionRule(actionType).execute(game, actionController.getAction(actionType));
             } else if (splited.length == 2) {
                 actionType = actionController.findActionType(splited[0]);
                 Item directObject = findDirectObject(game, splited[1]);
-                directObject.findActionRule(actionType).execute(actionController.getAction(actionType));
+                directObject.findActionRule(actionType).execute(game, actionController.getAction(actionType));
             }
         }
+
     }
 
     private static Item findDirectObject(Game game, String directOjectName) {
@@ -51,10 +52,15 @@ public class JoManQuest {
 
         //First Room Setup
         Room firstRoom = new Room("MasterRoom","This is the first room and there are a number of nice items in here", "inspect the room and us everything you see, och yeah and try to get out of the room");
-        Item chest = new Item("Chest", "A beautiful antique chest, seems to be locked", "Try to move the chest", false, false, false);
-        Item key = new Item("Key", "There is a key in the middle of the room", "DUH HUH !!!!", false, false, false);
+        Item chest = new Item("Chest", "A beautiful antique chest, seems to be locked", "Try to move the chest", false, true, false);
+        Item letter = new Item("Letter", "An old letter is lying on the place where once the chest stood.", "Dear Sir, if you happen to find me, I am not important, yours sincerely", false, false, true);
+        Item[] hiddenItems = {letter};
+        ActionRule moveChestActionRule = new ActionRule(ActionType.MOVE, chest, Arrays.asList(hiddenItems));
+        chest.getActionRules().add(moveChestActionRule);
+        Item key = new Item("Key", "There is a key in the middle of the room", "DUH HUH !!!!", true, false, false);
         firstRoom.getItems().add(chest);
         firstRoom.getItems().add(key);
+        firstRoom.getItems().add(letter);
 
         //Second room
         Room secondRoom = new Room("BedRoom","This is the bedroom and there are a number of nice items in here", "inspect the room and us everything you see, och yeah and try to get out of the room");

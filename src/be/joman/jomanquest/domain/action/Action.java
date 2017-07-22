@@ -15,9 +15,9 @@ public class Action implements Serializable{
 
     private List<String> synonyms;
 
-    private Consumer<Item> action;
+    private Consumer<ActionArguments> action;
 
-    public Action(ActionType actionType, List<String> synonyms, Consumer<Item> action) {
+    public Action(ActionType actionType, List<String> synonyms, Consumer<ActionArguments> action) {
         this.actionType = actionType;
         this.synonyms = synonyms;
         this.action = action;
@@ -31,7 +31,7 @@ public class Action implements Serializable{
         return synonyms;
     }
 
-    public void execute(Item item){
-        action.accept(item);
+    public void execute(ActionArguments actionArguments){
+        action.accept(actionArguments);
     }
 }

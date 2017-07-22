@@ -105,8 +105,7 @@ public class Game extends Item implements Serializable {
     @Override
     public void inspect(){
         System.out.println(getName() + ": " + getDescription());
-        System.out.println("welcome: ");
-        player.inspect();
+        System.out.println("welcome: " + player.getName());
         System.out.println("You are now in the: ");
         currentRoom.inspect();
     }

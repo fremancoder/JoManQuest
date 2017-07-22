@@ -1,5 +1,6 @@
 package be.joman.jomanquest.domain.action;
 
+import be.joman.jomanquest.domain.Game;
 import be.joman.jomanquest.domain.Item;
 
 import java.io.Serializable;
@@ -45,8 +46,8 @@ public class ActionRule implements Serializable{
         return indirectObjects;
     }
 
-    public void execute(Action action) {
-        action.execute(directObject);
+    public void execute(Game game, Action action) {
+        action.execute(new ActionArguments(game, this));
     }
 
 }

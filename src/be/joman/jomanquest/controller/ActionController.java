@@ -4,7 +4,7 @@ import be.joman.jomanquest.domain.Game;
 import be.joman.jomanquest.domain.Gateway;
 import be.joman.jomanquest.domain.Item;
 import be.joman.jomanquest.domain.action.Action;
-import be.joman.jomanquest.domain.action.ActionRule;
+import be.joman.jomanquest.domain.action.ActionArguments;
 import be.joman.jomanquest.domain.action.ActionType;
 
 import java.util.ArrayList;
@@ -21,23 +21,30 @@ public class ActionController {
 
     private List<Action> actions;
 
-    Consumer <Item> inspectAction = (Item item)-> { item.inspect();};
+    Consumer <ActionArguments> inspectAction = (ActionArguments arg)-> { arg.getActionRule().getDirectObject().inspect();};
 
-    Consumer <Item> closeAction = (Item item) -> { if(!((Gateway)item).isLocked()) ((Gateway)item).lock();};
+    Consumer <ActionArguments> tipAction = (ActionArguments arg)-> { arg.getActionRule().getDirectObject().info();};
 
-    Consumer <Item> openAction = (Item item) -> { if(((Gateway)item).isLocked()) ((Gateway)item).unLock();};
+    Consumer <ActionArguments> saveAction = (ActionArguments arg) -> { ((Game)arg.getActionRule().getDirectObject()).saveGame();};
 
-    Consumer <Item> moveAction = (Item item) -> { if(((Gateway)item).isLocked()) ((Gateway)item).unLock();};
+    Consumer <ActionArguments> loadAction = (ActionArguments arg) -> { ((Game)arg.getActionRule().getDirectObject()).loadGame();};
 
-    Consumer <Item> saveAction = (Item item) -> { ((Game)item).saveGame();};
+    Consumer <ActionArguments> musicAction = (ActionArguments arg) -> { ((Game)arg.getActionRule().getDirectObject()).playMusic();};
 
-    Consumer <Item> loadAction = (Item item) -> { ((Game)item).loadGame();};
+    Consumer <ActionArguments> muteAction = (ActionArguments arg) -> { ((Game)arg.getActionRule().getDirectObject()).muteMusic();};
 
-    Consumer <Item> musicAction = (Item item) -> { ((Game)item).playMusic();};
+    Consumer <ActionArguments> quitAction = (ActionArguments arg) -> { ((Game)arg.getActionRule().getDirectObject()).quit();};
 
-    Consumer <Item> muteAction = (Item item) -> { ((Game)item).muteMusic();};
+    Consumer <ActionArguments> closeAction = (ActionArguments arg) -> { if(!((Gateway)arg.getActionRule().getDirectObject()).isLocked()) ((Gateway)arg.getActionRule().getDirectObject()).lock();};
 
-    Consumer <Item> quitAction = (Item item) -> { ((Game)item).quit();};
+    Consumer <ActionArguments> openAction = (ActionArguments arg) -> { Item o = arg.getActionRule().getDirectObject(); if(((Gateway)o).isLocked()) ((Gateway)o).unLock();};
+
+    Consumer <ActionArguments> takeAction = (ActionArguments arg) -> { Item o = arg.getActionRule().getDirectObject(); if(o.isCollectible()) {arg.getGame().getPlayer().getItems().add(o); arg.getGame().getCurrentRoom().removeItem(o);
+        System.out.println("I just put that stuff in my backpack.");}};
+
+    Consumer <ActionArguments> moveAction = (ActionArguments arg) -> { Item o = arg.getActionRule().getDirectObject(); if(o.isMovable()) {o.move(arg.getActionRule().getIndirectObjects()); } };
+
+//    Consumer <ActionArguments> useAction = (ActionArguments arg) -> { };
 
     public static ActionController getInstance() {
         return ourInstance;
@@ -46,20 +53,20 @@ public class ActionController {
     private ActionController() {
         actions = new ArrayList<>();
 
-        String[] takeSynonyms = {"take","acquire","get","obtain","attain","collect","gain","gather","fetch","grab","pick up","snag","secure"};
-        actions.add(new Action(ActionType.TAKE, Arrays.asList(takeSynonyms), inspectAction));
-
-        String[] useSynonyms = {"use","apply","break","hit","throw"};
-        actions.add(new Action(ActionType.USE, Arrays.asList(useSynonyms), inspectAction));
-
         String[] inspectSynonyms = {"inspect","examine","look","look at","audit","review","watch","scan","investigate","probe","assess","evaluate"};
         actions.add(new Action(ActionType.INSPECT, Arrays.asList(inspectSynonyms), inspectAction));
 
-        String[] moveSynonyms = {"move","examine","look","look at","audit","review","watch","scan","investigate","probe","assess","evaluate"};
-        actions.add(new Action(ActionType.MOVE, Arrays.asList(moveSynonyms), inspectAction));
+        String[] tipSynonyms = {"tip","info","hint","help"};
+        actions.add(new Action(ActionType.TIP, Arrays.asList(tipSynonyms), tipAction));
 
-        String[] talkSynonyms = {"talk", "chat", "babble", "prate", "say", "communicate", "converse", "parley"};
-        actions.add(new Action(ActionType.TALK, Arrays.asList(talkSynonyms), inspectAction));
+        String[] takeSynonyms = {"take","acquire","get","obtain","attain","collect","gain","gather","fetch","grab","pick up","snag","secure"};
+        actions.add(new Action(ActionType.TAKE, Arrays.asList(takeSynonyms), takeAction));
+
+//        String[] useSynonyms = {"use","apply","break","hit","throw"};
+//        actions.add(new Action(ActionType.USE, Arrays.asList(useSynonyms), useAction));
+
+        String[] moveSynonyms = {"move","examine","look","look at","audit","review","watch","scan","investigate","probe","assess","evaluate"};
+        actions.add(new Action(ActionType.MOVE, Arrays.asList(moveSynonyms), moveAction));
 
         String[] openSynonyms = {"open", "unlock"};
         actions.add(new Action(ActionType.OPEN, Arrays.asList(openSynonyms), openAction));
@@ -81,6 +88,11 @@ public class ActionController {
 
         String[] quitSynonyms = {"quit"};
         actions.add(new Action(ActionType.QUIT, Arrays.asList(quitSynonyms), quitAction));
+
+
+//        String[] talkSynonyms = {"talk", "chat", "babble", "prate", "say", "communicate", "converse", "parley"};
+//        actions.add(new Action(ActionType.TALK, Arrays.asList(talkSynonyms), inspectAction));
+
     }
 
 
