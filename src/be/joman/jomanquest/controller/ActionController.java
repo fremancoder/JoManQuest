@@ -1,7 +1,10 @@
 package be.joman.jomanquest.controller;
 
+import be.joman.jomanquest.domain.Game;
+import be.joman.jomanquest.domain.Gateway;
 import be.joman.jomanquest.domain.Item;
 import be.joman.jomanquest.domain.action.Action;
+import be.joman.jomanquest.domain.action.ActionRule;
 import be.joman.jomanquest.domain.action.ActionType;
 
 import java.util.ArrayList;
@@ -18,7 +21,27 @@ public class ActionController {
 
     private List<Action> actions;
 
-    Consumer <List<Item>> inspectAction = (List<Item> itemList)-> { for (Item item : itemList) { item.inspect();}};
+    Consumer <Item> inspectAction = (Item item)-> { item.inspect();};
+
+    Consumer <Item> closeAction = (Item item) -> { if(!((Gateway)item).isLocked()) ((Gateway)item).lock();};
+
+    Consumer <Item> openAction = (Item item) -> { if(((Gateway)item).isLocked()) ((Gateway)item).unLock();};
+
+    Consumer <Item> moveAction = (Item item) -> { if(((Gateway)item).isLocked()) ((Gateway)item).unLock();};
+
+    Consumer <Item> saveAction = (Item item) -> { ((Game)item).saveGame();};
+
+    Consumer <Item> loadAction = (Item item) -> { ((Game)item).loadGame();};
+
+    Consumer <Item> musicAction = (Item item) -> { ((Game)item).playMusic();};
+
+    Consumer <Item> muteAction = (Item item) -> { ((Game)item).muteMusic();};
+
+    Consumer <Item> quitAction = (Item item) -> { ((Game)item).quit();};
+
+    public static ActionController getInstance() {
+        return ourInstance;
+    }
 
     private ActionController() {
         actions = new ArrayList<>();
@@ -39,20 +62,41 @@ public class ActionController {
         actions.add(new Action(ActionType.TALK, Arrays.asList(talkSynonyms), inspectAction));
 
         String[] openSynonyms = {"open", "unlock"};
-        actions.add(new Action(ActionType.OPEN, Arrays.asList(openSynonyms), inspectAction));
+        actions.add(new Action(ActionType.OPEN, Arrays.asList(openSynonyms), openAction));
 
         String[] closeSynonyms = {"close", "shut", "lock"};
-        actions.add(new Action(ActionType.CLOSE, Arrays.asList(closeSynonyms), inspectAction));
+        actions.add(new Action(ActionType.CLOSE, Arrays.asList(closeSynonyms), closeAction));
+
+        String[] musicSynonyms = {"music", "tune", "noise"};
+        actions.add(new Action(ActionType.MUSIC, Arrays.asList(musicSynonyms), musicAction));
+
+        String[] muteSynonyms = {"mute", "silence"};
+        actions.add(new Action(ActionType.MUTE, Arrays.asList(muteSynonyms), muteAction));
+
+        String[] loadSynonyms = {"load"};
+        actions.add(new Action(ActionType.LOAD, Arrays.asList(loadSynonyms), loadAction));
+
+        String[] saveSynonyms = {"save"};
+        actions.add(new Action(ActionType.SAVE, Arrays.asList(saveSynonyms), saveAction));
+
+        String[] quitSynonyms = {"quit"};
+        actions.add(new Action(ActionType.QUIT, Arrays.asList(quitSynonyms), quitAction));
     }
 
-    public static ActionController getInstance() {
-        return ourInstance;
-    }
 
     public ActionType findActionType(String synonym){
         for (Action action : actions) {
             if(synonym != null && action.getSynonyms().contains(synonym.toLowerCase())){
                 return action.getActionType();
+            }
+        }
+        return null;
+    }
+
+    public Action getAction(ActionType actionType){
+        for (Action action : actions) {
+            if(action.getActionType().equals(actionType)){
+                return action;
             }
         }
         return null;

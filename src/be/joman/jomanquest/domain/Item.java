@@ -2,11 +2,9 @@ package be.joman.jomanquest.domain;
 
 import be.joman.jomanquest.domain.action.ActionRule;
 import be.joman.jomanquest.domain.action.ActionType;
-import be.joman.jomanquest.domain.action.InspectActionResult;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -33,9 +31,8 @@ public class Item implements Serializable{
         this.isCollectible = isCollectible;
         this.isMovable = isMovable;
         this.isHidden  = isHidden;
-        Item[] item = {this};
 
-        getActionRules().add(new ActionRule(ActionType.INSPECT, Arrays.asList(item), new InspectActionResult() ));
+        getActionRules().add(new ActionRule(ActionType.INSPECT, this ));
     }
 
     public String getName() {
@@ -102,7 +99,7 @@ public class Item implements Serializable{
 
     public Item findItem(String itemName){
         for (Item item : items) {
-            if(item.getName().equals(itemName)){
+            if(item.getName().toLowerCase().equals(itemName.toLowerCase())){
                 return item;
             }
         }
@@ -119,10 +116,12 @@ public class Item implements Serializable{
     }
 
     public void inspect(){
-        System.out.println(description);
+        System.out.println(name + ": " + description);
         if(items != null){
             for (Item item : items) {
-                System.out.println(item.getDescription());
+                if(!item.isHidden()) {
+                    item.inspect();
+                }
             }
         }
     }

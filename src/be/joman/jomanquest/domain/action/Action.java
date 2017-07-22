@@ -2,24 +2,25 @@ package be.joman.jomanquest.domain.action;
 
 import be.joman.jomanquest.domain.Item;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.function.Consumer;
 
 /**
  * Created by Freddy on 15-7-2017.
  */
-public class Action {
+public class Action implements Serializable{
 
     private ActionType actionType;
 
     private List<String> synonyms;
 
-    private Consumer<List<Item>> lambdaFunction;
+    private Consumer<Item> action;
 
-    public Action(ActionType actionType, List<String> synonyms, Consumer<List<Item>> consumer) {
+    public Action(ActionType actionType, List<String> synonyms, Consumer<Item> action) {
         this.actionType = actionType;
         this.synonyms = synonyms;
-        this.lambdaFunction = consumer;
+        this.action = action;
     }
 
     public ActionType getActionType() {
@@ -30,7 +31,7 @@ public class Action {
         return synonyms;
     }
 
-    public void execute(ActionRule actionRule){
-        lambdaFunction.accept(actionRule.getDirectObjects());
+    public void execute(Item item){
+        action.accept(item);
     }
 }

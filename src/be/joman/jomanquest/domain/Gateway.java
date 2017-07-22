@@ -51,4 +51,14 @@ public class Gateway extends Item implements Serializable{
         locked = true;
     }
 
+    @Override
+    public void inspect(){
+        if(locked){
+            System.out.println(getName() + ": " + getDescription());
+        } else {
+            super.inspect();
+        }
+    }
+
+
 }
