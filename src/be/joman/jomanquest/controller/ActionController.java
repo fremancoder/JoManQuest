@@ -110,7 +110,7 @@ public class ActionController {
         final String[] saveSynonyms = {"save"};
         actions.add(new Action(ActionType.SAVE, Arrays.asList(saveSynonyms), saveAction));
 
-        final String[] quitSynonyms = {"quit"};
+        final String[] quitSynonyms = {"quit", "exit", "leave", "stop"};
         actions.add(new Action(ActionType.QUIT, Arrays.asList(quitSynonyms), quitAction));
 
     }

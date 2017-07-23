@@ -49,7 +49,7 @@ public class JoManQuest {
         chest.addActionRules(moveChestActionRule);
         Item window = new Item("Window", "There is a window on the right side of the room", "There are bars in behind the window, you won't be able to escape through the window", false, false);
         Item glass = new Item("Glass", "Some glass scrap is lying on the floor, must be the result of you throwing a rock at the window.", "Use the glass scrap when needed", true, false, true, false);
-        Item brokenWindow = new Item("BrokenWindow", "There is a broken window in the wall, I wonder what happened.", "There are still bars in the opening, no escape possible", true, false, true, false);
+        Item brokenWindow = new Item("BrokenWindow", "There is a broken window in the wall, I wonder what happened.", "There are still bars in the opening, no escape possible", false, false, true, false);
         Item rock = new Item("Rock", "A few rocks are lying in the corner of the room.", "Try playing with the rock", true, false);
         Item[] indirectObj = { window };
         Item[] resultingObj = { glass, brokenWindow };
