@@ -22,18 +22,19 @@ public class ActionRule implements Serializable{
 
     private Item resultingObject;
 
-    public ActionRule(ActionType actionType, Item directObject) {
+    //Do we need to declare constructor arguments as final?
+    public ActionRule(final ActionType actionType, final Item directObject) {
         this.directObject = directObject;
         this.actionType = actionType;
     }
 
-    public ActionRule(ActionType actionType, Item directObject, List<Item> indirectObjects) {
+    public ActionRule(final ActionType actionType, final Item directObject, final List<Item> indirectObjects) {
         this.directObject = directObject;
         this.actionType = actionType;
         this.indirectObjects = indirectObjects;
     }
 
-    public ActionRule(ActionType actionType, Item directObject, List<Item> indirectObjects, Item resultingObject) {
+    public ActionRule(final ActionType actionType, final Item directObject, final List<Item> indirectObjects, final Item resultingObject) {
         this.directObject = directObject;
         this.actionType = actionType;
         this.indirectObjects = indirectObjects;

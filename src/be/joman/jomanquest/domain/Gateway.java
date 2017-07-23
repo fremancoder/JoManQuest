@@ -23,16 +23,8 @@ public class Gateway extends Item implements Serializable{
         return initialRoom;
     }
 
-    public void setInitialRoom(Room initialRoom) {
-        this.initialRoom = initialRoom;
-    }
-
     public Room getSecondaryRoom() {
         return secondaryRoom;
-    }
-
-    public void setSecondaryRoom(Room secondaryRoom) {
-        this.secondaryRoom = secondaryRoom;
     }
 
     @Override

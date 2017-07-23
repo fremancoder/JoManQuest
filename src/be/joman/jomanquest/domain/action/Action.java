@@ -17,7 +17,7 @@ public class Action implements Serializable{
 
     private Consumer<ActionArguments> action;
 
-    public Action(ActionType actionType, List<String> synonyms, Consumer<ActionArguments> action) {
+    public Action(final ActionType actionType, final List<String> synonyms, final Consumer<ActionArguments> action) {
         this.actionType = actionType;
         this.synonyms = synonyms;
         this.action = action;

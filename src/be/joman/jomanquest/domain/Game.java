@@ -50,7 +50,7 @@ public class Game extends Item implements Serializable {
         return currentRoom;
     }
 
-    public void setCurrentRoom(Room currentRoom) {
+    public void setCurrentRoom(final Room currentRoom) {
         this.currentRoom = currentRoom;
     }
 
@@ -58,7 +58,7 @@ public class Game extends Item implements Serializable {
         return player;
     }
 
-    public void setPlayer(Player player) {
+    public void setPlayer(final Player player) {
         this.player = player;
     }
 
@@ -135,7 +135,7 @@ public class Game extends Item implements Serializable {
         return objects;
     }
 
-    public boolean executeValidActionRules(List<String> words) {
+    public boolean executeValidActionRules(final List<String> words) {
         boolean exit = false;
 
         //Find relevant verbs and available objects in the sentence
@@ -157,7 +157,7 @@ public class Game extends Item implements Serializable {
         return exit;
     }
 
-    private List<ActionRule> findActionRules(List<ActionType> actionTypes, List<Item> objects) {
+    private List<ActionRule> findActionRules(final List<ActionType> actionTypes, final List<Item> objects) {
         List<ActionRule> actionRules = new ArrayList<>();
         if(objects.isEmpty()) objects.add(this);
 

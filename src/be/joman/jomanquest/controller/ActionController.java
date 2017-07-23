@@ -21,21 +21,21 @@ public class ActionController {
 
     private List<Action> actions;
 
-    Consumer <ActionArguments> inspectAction = (ActionArguments arg)-> { arg.getActionRule().getDirectObject().inspect();};
+    private final Consumer <ActionArguments> inspectAction = (ActionArguments arg)-> { arg.getActionRule().getDirectObject().inspect();};
 
-    Consumer <ActionArguments> tipAction = (ActionArguments arg)-> { arg.getActionRule().getDirectObject().info();};
+    private final Consumer <ActionArguments> tipAction = (ActionArguments arg)-> { arg.getActionRule().getDirectObject().info();};
 
-    Consumer <ActionArguments> saveAction = (ActionArguments arg) -> { ((Game)arg.getActionRule().getDirectObject()).saveGame();};
+    private final Consumer <ActionArguments> saveAction = (ActionArguments arg) -> { ((Game)arg.getActionRule().getDirectObject()).saveGame();};
 
-    Consumer <ActionArguments> loadAction = (ActionArguments arg) -> { ((Game)arg.getActionRule().getDirectObject()).loadGame();};
+    private final Consumer <ActionArguments> loadAction = (ActionArguments arg) -> { ((Game)arg.getActionRule().getDirectObject()).loadGame();};
 
-    Consumer <ActionArguments> musicAction = (ActionArguments arg) -> { ((Game)arg.getActionRule().getDirectObject()).playMusic();};
+    private final Consumer <ActionArguments> musicAction = (ActionArguments arg) -> { ((Game)arg.getActionRule().getDirectObject()).playMusic();};
 
-    Consumer <ActionArguments> muteAction = (ActionArguments arg) -> { ((Game)arg.getActionRule().getDirectObject()).muteMusic();};
+    private final Consumer <ActionArguments> muteAction = (ActionArguments arg) -> { ((Game)arg.getActionRule().getDirectObject()).muteMusic();};
 
-    Consumer <ActionArguments> quitAction = (ActionArguments arg) -> { ((Game)arg.getActionRule().getDirectObject()).quit();};
+    private final Consumer <ActionArguments> quitAction = (ActionArguments arg) -> { ((Game)arg.getActionRule().getDirectObject()).quit();};
 
-    Consumer <ActionArguments> openAction = (ActionArguments arg) -> {
+    private final Consumer <ActionArguments> openAction = (ActionArguments arg) -> {
         if(!arg.getActionRule().getDirectObject().isLocked()) {
             if(((Gateway)arg.getActionRule().getDirectObject()).getInitialRoom().equals(arg.getGame().getCurrentRoom())){
                 arg.getGame().setCurrentRoom(((Gateway)arg.getActionRule().getDirectObject()).getSecondaryRoom());
@@ -48,16 +48,16 @@ public class ActionController {
         }
     };
 
-    Consumer <ActionArguments> lockAction = (ActionArguments arg) -> { if(!arg.getActionRule().getDirectObject().isLocked()) {arg.getActionRule().getDirectObject().lock();}};
+    private final Consumer <ActionArguments> lockAction = (ActionArguments arg) -> { if(!arg.getActionRule().getDirectObject().isLocked()) {arg.getActionRule().getDirectObject().lock();}};
 
-    Consumer <ActionArguments> unlockAction = (ActionArguments arg) -> { Item o = arg.getActionRule().getDirectObject(); if(o.isLocked()) {o.unLock();}};
+    private final Consumer <ActionArguments> unlockAction = (ActionArguments arg) -> { Item o = arg.getActionRule().getDirectObject(); if(o.isLocked()) {o.unLock();}};
 
-    Consumer <ActionArguments> takeAction = (ActionArguments arg) -> { Item o = arg.getActionRule().getDirectObject(); if(o.isCollectible()) {arg.getGame().getPlayer().getItems().add(o); arg.getGame().getCurrentRoom().removeItem(o);
+    private final Consumer <ActionArguments> takeAction = (ActionArguments arg) -> { Item o = arg.getActionRule().getDirectObject(); if(o.isCollectible()) {arg.getGame().getPlayer().getItems().add(o); arg.getGame().getCurrentRoom().removeItem(o);
         System.out.println("I just put that stuff in my backpack.");}};
 
-    Consumer <ActionArguments> moveAction = (ActionArguments arg) -> { Item o = arg.getActionRule().getDirectObject(); if(o.isMovable()) {o.move(arg.getActionRule().getIndirectObjects()); } };
+    private final Consumer <ActionArguments> moveAction = (ActionArguments arg) -> { Item o = arg.getActionRule().getDirectObject(); if(o.isMovable()) {o.move(arg.getActionRule().getIndirectObjects()); } };
 
-    Consumer <ActionArguments> createAction = (ActionArguments arg) -> {
+    private final Consumer <ActionArguments> createAction = (ActionArguments arg) -> {
         for (Item obj : arg.getActionRule().getIndirectObjects() ) {
             arg.getGame().getCurrentRoom().removeItem(obj);
         }

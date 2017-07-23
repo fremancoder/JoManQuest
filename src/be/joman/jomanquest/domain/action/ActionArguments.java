@@ -12,7 +12,7 @@ public class ActionArguments {
 
     private ActionRule actionRule;
 
-    public ActionArguments(Game game, ActionRule actionRule) {
+    public ActionArguments(final Game game, final ActionRule actionRule) {
         this.game = game;
         this.actionRule = actionRule;
     }
