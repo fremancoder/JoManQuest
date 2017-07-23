@@ -20,6 +20,8 @@ public class ActionRule implements Serializable{
 
     private List<Item> indirectObjects = new ArrayList<>();
 
+    private Item resultingObject;
+
     public ActionRule(ActionType actionType, Item directObject) {
         this.directObject = directObject;
         this.actionType = actionType;
@@ -31,10 +33,12 @@ public class ActionRule implements Serializable{
         this.indirectObjects = indirectObjects;
     }
 
-//    public ActionRule(ActionType actionType, Item directObject, Item resultingObject) {
-//        this.directObject = directObject;
-//        this.actionType = actionType;
-//    }
+    public ActionRule(ActionType actionType, Item directObject, List<Item> indirectObjects, Item resultingObject) {
+        this.directObject = directObject;
+        this.actionType = actionType;
+        this.indirectObjects = indirectObjects;
+        this.resultingObject = resultingObject;
+    }
 
     public Item getDirectObject() {
         return directObject;
@@ -47,6 +51,8 @@ public class ActionRule implements Serializable{
     public List<Item> getIndirectObjects() {
         return indirectObjects;
     }
+
+    public Item getResultingObject() { return resultingObject; }
 
     public void execute(Game game) {
         ActionController.getInstance().getAction(actionType).execute(new ActionArguments(game, this));

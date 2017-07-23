@@ -57,7 +57,13 @@ public class ActionController {
 
     Consumer <ActionArguments> moveAction = (ActionArguments arg) -> { Item o = arg.getActionRule().getDirectObject(); if(o.isMovable()) {o.move(arg.getActionRule().getIndirectObjects()); } };
 
-//    Consumer <ActionArguments> useAction = (ActionArguments arg) -> { };
+    Consumer <ActionArguments> createAction = (ActionArguments arg) -> {
+        for (Item obj : arg.getActionRule().getIndirectObjects() ) {
+            arg.getGame().getCurrentRoom().removeItem(obj);
+        }
+        arg.getActionRule().getResultingObject().unHide();
+        System.out.println("WOW what just happened?");
+    };
 
     public static ActionController getInstance() {
         return ourInstance;
@@ -75,8 +81,8 @@ public class ActionController {
         final String[] takeSynonyms = {"take","acquire","get","obtain","attain","collect","gain","gather","fetch","grab","pick up","snag","secure"};
         actions.add(new Action(ActionType.TAKE, Arrays.asList(takeSynonyms), takeAction));
 
-//        String[] useSynonyms = {"use","apply","break","hit","throw"};
-//        actions.add(new Action(ActionType.USE, Arrays.asList(useSynonyms), useAction));
+        String[] createSynonyms = {"create","make","build","use","apply","break","hit","throw"};
+        actions.add(new Action(ActionType.CREATE, Arrays.asList(createSynonyms), createAction));
 
         final String[] moveSynonyms = {"move","examine","look","look at","audit","review","watch","scan","investigate","probe","assess","evaluate"};
         actions.add(new Action(ActionType.MOVE, Arrays.asList(moveSynonyms), moveAction));

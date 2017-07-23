@@ -5,10 +5,8 @@ package be.joman.jomanquest.domain.action;
  */
 public enum ActionType {
     TAKE,
-    USE,
     INSPECT,
     MOVE,
-    TALK,
     OPEN,
     MUSIC,
     MUTE,
@@ -17,5 +15,6 @@ public enum ActionType {
     QUIT,
     TIP,
     UNLOCK,
-    LOCK;
+    LOCK,
+    CREATE;
 }
