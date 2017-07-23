@@ -9,17 +9,48 @@ import java.util.List;
  */
 public class Room extends Item implements Serializable{
 
-    private List<Gateway> gateways;
+    private List<Gateway> gateways = new ArrayList<>();
 
     public Room(String name, String description, String tip) {
-        super(name, description, tip, false, false, false);
+        super(name, description, tip, false, false);
     }
 
     public List<Gateway> getGateways() {
-        if(gateways == null){
-            gateways = new ArrayList<>();
-        }
         return gateways;
     }
+
+    public void inspect(){
+        System.out.println("You are now in the " + getName() );
+        System.out.println("There seem to be a few exit points " );
+        for (Gateway gateway : gateways ) {
+            gateway.inspect();
+        }
+        if(!getItems().isEmpty()){
+            System.out.println("and there is a lot of stuff lying around worthwhile investigating");
+            super.inspectItems();
+        }
+    }
+
+    public List<Item> findObjects(final List<String> words) {
+        List<Item> objects = new ArrayList<>();
+
+        objects.addAll(super.findObjects(words));
+        objects.addAll(findGateways(words));
+
+        return objects;
+    }
+
+    private List<Item> findGateways(final List<String> words) {
+        List<Item> objects = new ArrayList<>();
+        //Use getItems instead of items to avoid nullpointer
+        for (Item item : gateways) {
+            if(!item.isHidden()){
+                if(words.contains(item.getLowerCaseName())) objects.add(item);
+                if(!item.isLocked()) objects.addAll(item.findObjects(words));
+            }
+        }
+        return objects;
+    }
+
 
 }

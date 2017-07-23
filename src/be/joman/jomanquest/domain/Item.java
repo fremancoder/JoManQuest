@@ -20,27 +20,36 @@ public class Item implements Serializable{
     private boolean isCollectible;
     private boolean isMovable;
     private boolean isHidden;
+    private boolean isLocked;
 
-    private List<Item> items;
+    private List<Item> items = new ArrayList<>();
 
-    private List<ActionRule> actionRules;
+    private List<ActionRule> actionRules = new ArrayList<>();
 
-    public Item(String name, String description, String info, boolean isCollectible, boolean isMovable, boolean isHidden) {
+    public Item(String name, String description, String info, boolean isCollectible, boolean isMovable) {
+        this(name, description, info, isCollectible, isMovable, false, false);
+    }
+
+    public Item(String name, String description, String info, boolean isCollectible, boolean isMovable, boolean isHidden, boolean isLocked) {
         this.name = name;
         this.description = description;
         this.info = info;
         this.isCollectible = isCollectible;
         this.isMovable = isMovable;
         this.isHidden  = isHidden;
+        this.isLocked = isLocked;
 
-        getActionRules().add(new ActionRule(ActionType.INSPECT, this ));
-        getActionRules().add(new ActionRule(ActionType.TIP, this ));
-        if(isCollectible) getActionRules().add(new ActionRule(ActionType.TAKE, this ));
+        addActionRules(new ActionRule(ActionType.INSPECT, this ));
+        addActionRules(new ActionRule(ActionType.TIP, this ));
+
+        if(isCollectible) addActionRules(new ActionRule(ActionType.TAKE, this ));
     }
 
     public String getName() {
         return name;
     }
+
+    public String getLowerCaseName() { return name.toLowerCase(); }
 
     public void setName(String name) {
         this.name = name;
@@ -86,6 +95,20 @@ public class Item implements Serializable{
         isHidden = false;
     }
 
+    public boolean isLocked() {
+        return isLocked;
+    }
+
+    public void unLock() {
+        System.out.println(getName() + " has been unlocked.");
+        isLocked = false;
+    }
+
+    public void lock() {
+        System.out.println(getName() + " has been locked.");
+        isLocked = true;
+    }
+
     public List<Item> getItems() {
         if(items == null){
             items = new ArrayList<>();
@@ -93,38 +116,53 @@ public class Item implements Serializable{
         return items;
     }
 
-    public List<ActionRule> getActionRules() {
-        if(actionRules == null){
-            actionRules = new ArrayList<>();
+    public void addActionRules(ActionRule actionRule) {
+        if(actionRule.getDirectObject().equals(this)){
+            actionRules.add(actionRule);
+        } else {
+            System.out.println("WARNING: ActionRule not added direct objects do not match");
         }
-        return actionRules;
     }
 
     public Item findItem(String itemName){
-        for (Item item : items) {
-            if(item.getName().toLowerCase().equals(itemName.toLowerCase())){
+        //Use getItems instead of items to avoid nullpointer
+        for (Item item : getItems()) {
+            if(item.getLowerCaseName().equals(itemName)){
                 return item;
             }
         }
         return null;
     }
 
-    public ActionRule findActionRule(ActionType actionType){
+    public ActionRule findActionRule(ActionType actionType, List<Item> objects){
         for (ActionRule actionRule : actionRules) {
-            if(actionRule.getActionType().equals(actionType)){
+            if(actionRule.getActionType().equals(actionType) && indirectObjectsMatch(actionRule, objects)){
                 return actionRule;
             }
         }
         return null;
     }
 
+    private boolean indirectObjectsMatch(ActionRule actionRule, List<Item> objects) {
+        boolean allIndirectObjectsFound = true;
+        for (Item item : actionRule.getIndirectObjects() ) {
+            if(!item.isHidden() && !objects.contains(item)){
+                allIndirectObjectsFound = false;
+            }
+        }
+        return allIndirectObjectsFound;
+    }
+
     public void inspect(){
         System.out.println(name + ": " + description);
-        if(items != null){
-            for (Item item : items) {
-                if(!item.isHidden()) {
-                    item.inspect();
-                }
+        inspectItems();
+    }
+
+    public void inspectItems() {
+        //Use getItems instead of items to avoid nullpointer
+        for (Item item : getItems()) {
+            if(!item.isHidden()) {
+                item.inspect();
             }
         }
     }
@@ -141,7 +179,7 @@ public class Item implements Serializable{
                 if(item.equals(directObject)){
                     itr.remove();
                 } else {
-                    item.removeItem(directObject);
+                    if(!item.isLocked) item.removeItem(directObject);
                 }
             }
         }
@@ -152,6 +190,18 @@ public class Item implements Serializable{
         for (Item item : indirectObjects) {
             if(item.isHidden()) item.unHide();
         }
+    }
+
+    public List<Item> findObjects(final List<String> words) {
+        List<Item> objects = new ArrayList<>();
+        //Use getItems instead of items to avoid nullpointer
+        for (Item item : getItems()) {
+            if(!item.isHidden()){
+                if(words.contains(item.getLowerCaseName())) objects.add(item);
+                if(!item.isLocked()) objects.addAll(item.findObjects(words));
+            }
+        }
+        return objects;
     }
 
 }

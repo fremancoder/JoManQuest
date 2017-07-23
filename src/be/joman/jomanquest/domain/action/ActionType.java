@@ -10,10 +10,12 @@ public enum ActionType {
     MOVE,
     TALK,
     OPEN,
-    CLOSE,
     MUSIC,
     MUTE,
     LOAD,
     SAVE,
-    QUIT, TIP;
+    QUIT,
+    TIP,
+    UNLOCK,
+    LOCK;
 }

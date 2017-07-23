@@ -1,9 +1,11 @@
 package be.joman.jomanquest.domain.action;
 
+import be.joman.jomanquest.controller.ActionController;
 import be.joman.jomanquest.domain.Game;
 import be.joman.jomanquest.domain.Item;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -16,7 +18,7 @@ public class ActionRule implements Serializable{
 
     private ActionType actionType;
 
-    private List<Item> indirectObjects;
+    private List<Item> indirectObjects = new ArrayList<>();
 
     public ActionRule(ActionType actionType, Item directObject) {
         this.directObject = directObject;
@@ -29,10 +31,10 @@ public class ActionRule implements Serializable{
         this.indirectObjects = indirectObjects;
     }
 
-    public ActionRule(ActionType actionType, Item directObject, Item resultingObject) {
-        this.directObject = directObject;
-        this.actionType = actionType;
-    }
+//    public ActionRule(ActionType actionType, Item directObject, Item resultingObject) {
+//        this.directObject = directObject;
+//        this.actionType = actionType;
+//    }
 
     public Item getDirectObject() {
         return directObject;
@@ -46,8 +48,8 @@ public class ActionRule implements Serializable{
         return indirectObjects;
     }
 
-    public void execute(Game game, Action action) {
-        action.execute(new ActionArguments(game, this));
+    public void execute(Game game) {
+        ActionController.getInstance().getAction(actionType).execute(new ActionArguments(game, this));
     }
 
 }

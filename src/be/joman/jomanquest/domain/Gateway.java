@@ -9,16 +9,14 @@ import java.io.Serializable;
  */
 public class Gateway extends Item implements Serializable{
 
-    private boolean locked;
-
     private Room initialRoom;
     private Room secondaryRoom;
 
     public Gateway(String name, String description, String tip, Room initialRoom, Room secondaryRoom, boolean locked) {
-        super(name, description, tip, false, false, false);
+        super(name, description, tip, false, false, false, locked);
         this.initialRoom = initialRoom;
         this.secondaryRoom = secondaryRoom;
-        this.locked = locked;
+        addActionRules(new ActionRule(ActionType.OPEN, this ));
     }
 
     public Room getInitialRoom() {
@@ -37,28 +35,13 @@ public class Gateway extends Item implements Serializable{
         this.secondaryRoom = secondaryRoom;
     }
 
-    public boolean isLocked() {
-        return locked;
-    }
-
-    public void unLock() {
-        System.out.println(getName() + " has been unlocked, it is open now, you can travers the gateway");
-        locked = false;
-    }
-
-    public void lock() {
-        System.out.println(getName() + " has been locked, no-one can enter or leave");
-        locked = true;
-    }
-
     @Override
     public void inspect(){
-        if(locked){
+        if(isLocked()){
             System.out.println(getName() + ": " + getDescription());
         } else {
             super.inspect();
         }
     }
-
 
 }

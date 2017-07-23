@@ -10,7 +10,7 @@ import java.util.List;
 public class Player extends Item implements Serializable{
 
     public Player() {
-        super("Bob", "", "", false, true, false);
+        super("Bob", "", "", false, true);
     }
 
     @Override
