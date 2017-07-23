@@ -61,7 +61,9 @@ public class ActionController {
         for (Item obj : arg.getActionRule().getIndirectObjects() ) {
             arg.getGame().getCurrentRoom().removeItem(obj);
         }
-        arg.getActionRule().getResultingObject().unHide();
+        for (Item resultObj : arg.getActionRule().getResultingObjects()) {
+            resultObj.unHide();
+        }
         System.out.println("WOW what just happened?");
     };
 
@@ -131,7 +133,7 @@ public class ActionController {
         return null;
     }
 
-    public List<ActionType> findActionTypes(final List<String>words){
+    public List<ActionType> findActionTypes(final List<String> words){
         List<ActionType> actionTypes = new ArrayList<>();
         for (final String word : words) {
             final ActionType actionType = findActionType(word);

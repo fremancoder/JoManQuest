@@ -11,7 +11,8 @@ public class Room extends Item implements Serializable{
 
     private List<Gateway> gateways = new ArrayList<>();
 
-    public Room(String name, String description, String tip) {
+    //Moet final(const) in constructor?
+    public Room(final String name, final String description, final String tip) {
         super(name, description, tip, false, false);
     }
 
@@ -43,7 +44,7 @@ public class Room extends Item implements Serializable{
     private List<Item> findGateways(final List<String> words) {
         List<Item> objects = new ArrayList<>();
         //Use getItems instead of items to avoid nullpointer
-        for (Item item : gateways) {
+        for (final Item item : gateways) {
             if(!item.isHidden()){
                 if(words.contains(item.getLowerCaseName())) objects.add(item);
                 if(!item.isLocked()) objects.addAll(item.findObjects(words));

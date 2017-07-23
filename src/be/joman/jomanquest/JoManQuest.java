@@ -49,9 +49,11 @@ public class JoManQuest {
         chest.addActionRules(moveChestActionRule);
         Item window = new Item("Window", "There is a window on the right side of the room", "There are bars in behind the window, you won't be able to escape through the window", false, false);
         Item glass = new Item("Glass", "Some glass scrap is lying on the floor, must be the result of you throwing a rock at the window.", "Use the glass scrap when needed", true, false, true, false);
+        Item brokenWindow = new Item("BrokenWindow", "There is a broken window in the wall, I wonder what happened.", "There are still bars in the opening, no escape possible", true, false, true, false);
         Item rock = new Item("Rock", "A few rocks are lying in the corner of the room.", "Try playing with the rock", true, false);
-        Item[] windowArr = { window };
-        ActionRule throwRockActionRule = new ActionRule(ActionType.CREATE, rock, Arrays.asList(windowArr), glass);
+        Item[] indirectObj = { window };
+        Item[] resultingObj = { glass, brokenWindow };
+        ActionRule throwRockActionRule = new ActionRule(ActionType.CREATE, rock, Arrays.asList(indirectObj), Arrays.asList(resultingObj) );
         rock.addActionRules(throwRockActionRule);
 
         Item key = new Item("Key", "There is a key in the middle of the room", "DUH HUH !!!!", true, false);
@@ -62,6 +64,7 @@ public class JoManQuest {
         firstRoom.getItems().add(window);
         firstRoom.getItems().add(glass);
         firstRoom.getItems().add(rock);
+        firstRoom.getItems().add(brokenWindow);
 
         //Second room
         Room secondRoom = new Room("BedRoom","This is the bedroom and there are a number of nice items in here", "inspect the room and us everything you see, och yeah and try to get out of the room");

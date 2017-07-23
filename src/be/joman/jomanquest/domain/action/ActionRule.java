@@ -20,7 +20,7 @@ public class ActionRule implements Serializable{
 
     private List<Item> indirectObjects = new ArrayList<>();
 
-    private Item resultingObject;
+    private List<Item> resultingObjects;
 
     //Do we need to declare constructor arguments as final?
     public ActionRule(final ActionType actionType, final Item directObject) {
@@ -34,11 +34,11 @@ public class ActionRule implements Serializable{
         this.indirectObjects = indirectObjects;
     }
 
-    public ActionRule(final ActionType actionType, final Item directObject, final List<Item> indirectObjects, final Item resultingObject) {
+    public ActionRule(final ActionType actionType, final Item directObject, final List<Item> indirectObjects, final List<Item> resultingObjects) {
         this.directObject = directObject;
         this.actionType = actionType;
         this.indirectObjects = indirectObjects;
-        this.resultingObject = resultingObject;
+        this.resultingObjects = resultingObjects;
     }
 
     public Item getDirectObject() {
@@ -53,7 +53,7 @@ public class ActionRule implements Serializable{
         return indirectObjects;
     }
 
-    public Item getResultingObject() { return resultingObject; }
+    public List<Item> getResultingObjects() { return resultingObjects; }
 
     public void execute(Game game) {
         ActionController.getInstance().getAction(actionType).execute(new ActionArguments(game, this));
