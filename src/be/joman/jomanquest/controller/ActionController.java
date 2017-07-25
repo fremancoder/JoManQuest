@@ -52,7 +52,7 @@ public class ActionController {
 
     private final Consumer <ActionArguments> unlockAction = (ActionArguments arg) -> { Item o = arg.getActionRule().getDirectObject(); if(o.isLocked()) {o.unLock();}};
 
-    private final Consumer <ActionArguments> takeAction = (ActionArguments arg) -> { Item o = arg.getActionRule().getDirectObject(); if(o.isCollectible()) {arg.getGame().getPlayer().getItems().add(o); arg.getGame().getCurrentRoom().removeItem(o);
+    private final Consumer <ActionArguments> takeAction = (ActionArguments arg) -> { Item o = arg.getActionRule().getDirectObject(); if(o.isCollectible()) {arg.getGame().getPlayer().getItems().add(o); arg.getGame().getCurrentRoom().removeItem(o); o.setCollectible(false);
         System.out.println("I just put that stuff in my backpack.");}};
 
     private final Consumer <ActionArguments> moveAction = (ActionArguments arg) -> { Item o = arg.getActionRule().getDirectObject(); if(o.isMovable()) {o.move(arg.getActionRule().getIndirectObjects()); } };
