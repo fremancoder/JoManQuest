@@ -34,8 +34,9 @@ public class Game extends Item implements Serializable {
 
     private transient MusicController musicController;
 
+    //TODO add to C++
     public Game() {
-        super("JoManQuest", "Welcome in the adventurous world of JoMan. You will be helping our main character Bob, He is desperately trying to escape this old mansion.", INFO, false, false);
+        super("JoManQuest", "Welcome in the adventurous world of JoMan. You will be helping our main character Bob, He is desperately trying to escape this old house.", INFO, false, false);
 
         addActionRules(new ActionRule(ActionType.SAVE, this));
         addActionRules(new ActionRule(ActionType.LOAD, this));

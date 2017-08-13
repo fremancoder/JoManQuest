@@ -7,6 +7,7 @@ public enum ActionType {
     TAKE,
     INSPECT,
     MOVE,
+    REMOVE,
     OPEN,
     MUSIC,
     MUTE,

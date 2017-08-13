@@ -159,10 +159,12 @@ public class Item implements Serializable{
     }
 
     public void inspectItems() {
-        //Use getItems instead of items to avoid nullpointer
-        for (Item item : getItems()) {
-            if(!item.isHidden()) {
-                item.inspect();
+        //TODO add to C++
+        if(!isLocked()){
+            for (Item item : getItems()) {
+                if(!item.isHidden()) {
+                    item.inspect();
+                }
             }
         }
     }
@@ -186,7 +188,8 @@ public class Item implements Serializable{
     }
 
     public void move(List<Item> indirectObjects) {
-        System.out.println("The " + name + " has been moved, who knows what has happened?");
+        //TODO add to C++
+        System.out.println("The " + name + " has been moved, who knows what has happened? You'd better inspect the surroundings again.");
         for (Item item : indirectObjects) {
             if(item.isHidden()) item.unHide();
         }
@@ -194,7 +197,6 @@ public class Item implements Serializable{
 
     public List<Item> findObjects(final List<String> words) {
         List<Item> objects = new ArrayList<>();
-        //Use getItems instead of items to avoid nullpointer
         for (Item item : getItems()) {
             if(!item.isHidden()){
                 if(words.contains(item.getLowerCaseName())) objects.add(item);

@@ -21,13 +21,15 @@ public class Room extends Item implements Serializable{
     }
 
     public void inspect(){
-        System.out.println("You are now in the " + getName() );
-        System.out.println("There seem to be a few exit points " );
+        //TODO add to C++
+        System.out.println(getDescription());
+        if(!gateways.isEmpty() && !getItems().isEmpty()){
+            System.out.println("There is some stuff which might be worthwhile investigating");
+        }
         for (Gateway gateway : gateways ) {
             gateway.inspect();
         }
         if(!getItems().isEmpty()){
-            System.out.println("and there is a lot of stuff lying around worthwhile investigating");
             super.inspectItems();
         }
     }

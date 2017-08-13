@@ -19,6 +19,14 @@ public class Gateway extends Item implements Serializable{
         addActionRules(new ActionRule(ActionType.OPEN, this ));
     }
 
+    //TODO add to C++
+    public Gateway(String name, String description, String tip, Room initialRoom, Room secondaryRoom, boolean locked, boolean hidden) {
+        super(name, description, tip, false, false, hidden, locked);
+        this.initialRoom = initialRoom;
+        this.secondaryRoom = secondaryRoom;
+        addActionRules(new ActionRule(ActionType.OPEN, this ));
+    }
+
     public Room getInitialRoom() {
         return initialRoom;
     }
@@ -29,10 +37,13 @@ public class Gateway extends Item implements Serializable{
 
     @Override
     public void inspect(){
-        if(isLocked()){
-            System.out.println(getName() + ": " + getDescription());
-        } else {
-            super.inspect();
+        //TODO add to C++
+        if(!isHidden()){
+            if(isLocked()){
+                System.out.println(getName() + ": " + getDescription());
+            } else {
+                super.inspect();
+            }
         }
     }
 

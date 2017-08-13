@@ -57,13 +57,24 @@ public class ActionController {
 
     private final Consumer <ActionArguments> moveAction = (ActionArguments arg) -> { Item o = arg.getActionRule().getDirectObject(); if(o.isMovable()) {o.move(arg.getActionRule().getIndirectObjects()); } };
 
-    private final Consumer <ActionArguments> createAction = (ActionArguments arg) -> {
-        for (Item obj : arg.getActionRule().getIndirectObjects() ) {
-            arg.getGame().getCurrentRoom().removeItem(obj);
+    //TODO add to c++
+    private final Consumer <ActionArguments> removeAction = (ActionArguments arg) -> {
+        for (Item item : arg.getActionRule().getResultingObjects()) {
+            if(item.isHidden()) item.unHide();
         }
+        arg.getGame().getCurrentRoom().removeItem(arg.getActionRule().getDirectObject());
+        arg.getGame().getPlayer().removeItem(arg.getActionRule().getDirectObject());
+        System.out.println("WOW what just happened?");
+    };
+
+    private final Consumer <ActionArguments> createAction = (ActionArguments arg) -> {
+        //TODO add to c++
         for (Item resultObj : arg.getActionRule().getResultingObjects()) {
+            arg.getGame().getCurrentRoom().getItems().add(resultObj);
             resultObj.unHide();
         }
+        arg.getGame().getCurrentRoom().removeItem(arg.getActionRule().getDirectObject());
+        arg.getGame().getPlayer().removeItem(arg.getActionRule().getDirectObject());
         System.out.println("WOW what just happened?");
     };
 
@@ -89,13 +100,18 @@ public class ActionController {
         final String[] moveSynonyms = {"move","examine","look","look at","audit","review","watch","scan","investigate","probe","assess","evaluate"};
         actions.add(new Action(ActionType.MOVE, Arrays.asList(moveSynonyms), moveAction));
 
+        //TODO add to C++
+        String[] removeSynonyms = {"tickle", "remove", "delete"};
+        actions.add(new Action(ActionType.REMOVE, Arrays.asList(removeSynonyms), removeAction));
+
         final String[] openSynonyms = {"open", "walk", "run", "go"};
         actions.add(new Action(ActionType.OPEN, Arrays.asList(openSynonyms), openAction));
 
         final String[] lockSynonyms = {"lock"};
         actions.add(new Action(ActionType.LOCK, Arrays.asList(lockSynonyms), lockAction));
 
-        final String[] unlockSynonyms = {"unlock"};
+        //TODO add to C++
+        final String[] unlockSynonyms = {"unlock", "pick"};
         actions.add(new Action(ActionType.UNLOCK, Arrays.asList(unlockSynonyms), unlockAction));
 
         final String[] musicSynonyms = {"music", "tune", "noise"};
